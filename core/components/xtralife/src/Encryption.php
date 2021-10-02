@@ -10,7 +10,7 @@ use Defuse\Crypto\Key;
 use RuntimeException;
 
 class Encryption {
-    public const KEY_DEFAULT = 'ENC_KEY_DEFAULT';
+    public const KEY_DEFAULT = 'XTRALIFE_ENCRYPTION_KEY';
 
     /**
      * @param $plaintext
