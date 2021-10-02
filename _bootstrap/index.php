@@ -108,6 +108,9 @@ if ($plugin) {
 //    $manager->createObjectContainer($oC);
 //}
 
+echo "Adding to extension packages..\n";
+$modx->addExtensionPackage('xtralife', $componentPath . '/core/components/xtralife/model/');
+
 echo "Done.\n";
 
 // Refresh the cache
