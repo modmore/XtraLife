@@ -1,20 +1,19 @@
 <?php
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\HttpFactory;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+
 require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
 
 class XtraLife
 {
-    /**
-     * @var modX $modx
-     */
-    public $modx;
-
-    /**
-     * @var array
-     */
-    public $config = [];
-
+    public modX $modx;
+    public array $config = [];
     public const VERSION = '1.0.0-dev1';
+    private Client $client;
+    private RequestFactoryInterface $factory;
 
     /**
      * @param modX $modx
@@ -49,6 +48,45 @@ class XtraLife
         $modelPath = $this->config['modelPath'];
         $this->modx->addPackage('xtralife', $modelPath);
         $this->modx->lexicon->load('xtralife:default');
+    }
+
+    /**
+     * Gets a Guzzle instance to send requests to the XtraLife API.
+     *
+     * @todo For MODX3 support, grab the client from the service container instead.
+     * @return ClientInterface
+     */
+    public function getClient(): ClientInterface
+    {
+        if (!$this->client) {
+            $this->client = new Client([
+                'base_uri' => $_ENV['XTRALIFE_API_URL'] ?? '',
+                'timeout' => 10.0,
+
+                'headers' => [
+                    'x-apikey' => $_ENV['XTRALIFE_API_KEY'] ?? '',
+                    'x-apisecret' => $_ENV['XTRALIFE_API_SECRET'] ?? '',
+                    'Content-Type' => 'application/json',
+                    'Accepts' => 'application/json',
+                ],
+            ]);
+        }
+
+        return $this->client;
+    }
+
+    /**
+     * Gets a RequestFactory to create new requests to send.
+     *
+     * @todo For MODX3 support, grab the factory from the service container instead.
+     * @return RequestFactoryInterface
+     */
+    public function getRequestFactory(): RequestFactoryInterface
+    {
+        if (!$this->factory) {
+            $this->factory = new HttpFactory();
+        }
+        return $this->factory;
     }
 }
 

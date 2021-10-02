@@ -82,6 +82,13 @@ if ($plugin) {
     }
 }
 
+if (!createObject('modSnippet', array(
+    'name' => 'XtraLifeRegister',
+    'static' => true,
+    'static_file' => $componentPath.'/core/components/xtralife/elements/snippets/register.snippet.php',
+), 'name', true)) {
+    echo "Error creating XtraLifeRegister snippet.\n";
+}
 
 //$settings = include dirname(dirname(__FILE__)).'/_build/data/settings.php';
 //foreach ($settings as $key => $opts) {

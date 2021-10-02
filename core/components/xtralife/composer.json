@@ -9,8 +9,10 @@
         }
     ],
     "require": {
+        "php": "^7.4 || ^8",
         "defuse/php-encryption": "^2.3",
-        "vlucas/phpdotenv": "^5.3"
+        "vlucas/phpdotenv": "^5.3",
+        "guzzlehttp/psr7": "^2.0"
     },
     "autoload": {
         "psr-4": {
