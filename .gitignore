@@ -1,0 +1,4 @@
+.idea
+config.core.php
+core/components/xtralife/vendor/
+core/components/xtralife/.env

@@ -1,0 +1,20 @@
+{
+    "name": "modmore/xtralife",
+    "description": "XtraLife integration for MODX Revolution",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "modmore",
+            "email": "support@modmore.com"
+        }
+    ],
+    "require": {
+        "defuse/php-encryption": "^2.3",
+        "vlucas/phpdotenv": "^5.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "modmore\\XtraLife\\": "src"
+        }
+    }
+}
