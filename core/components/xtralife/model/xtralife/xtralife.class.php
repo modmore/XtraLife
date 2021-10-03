@@ -47,7 +47,7 @@ class XtraLife
         // Load the xPDO Model
         $modelPath = $this->config['modelPath'];
         $this->modx->addPackage('xtralife', $modelPath);
-        $this->modx->lexicon->load('xtralife:default');
+//        $this->modx->lexicon->load('xtralife:default'); @fixme fails when logged in, because xlUser is loaded before the lexicon. Removed as not currently in use.
 
         // @todo For MODX3 support, grab the client from the service container instead.
         $this->client = new Client([
