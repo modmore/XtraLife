@@ -127,6 +127,7 @@ class xlUser extends modUser
 
         $this->setGamerID($data['gamer_id']);
         $this->setGamerSecret($data['gamer_secret']);
+        $this->set('password', $data['gamer_secret']); // Set the internal password to the gamer_secret; as we don't use it locally.
         return true;
     }
 }

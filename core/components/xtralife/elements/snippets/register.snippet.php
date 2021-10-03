@@ -71,6 +71,7 @@ if (!is_array($data) || !array_key_exists('gamer_id', $data)) {
 
 $user->setGamerID($data['gamer_id']);
 $user->setGamerSecret($data['gamer_secret']);
+$user->set('password', $data['gamer_secret']); // Set the internal password to the gamer_secret; as we don't use it locally.
 $user->save();
 
 return true;
