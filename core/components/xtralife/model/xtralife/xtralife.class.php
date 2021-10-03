@@ -48,44 +48,41 @@ class XtraLife
         $modelPath = $this->config['modelPath'];
         $this->modx->addPackage('xtralife', $modelPath);
         $this->modx->lexicon->load('xtralife:default');
+
+        // @todo For MODX3 support, grab the client from the service container instead.
+        $this->client = new Client([
+            'base_uri' => $_ENV['XTRALIFE_API_URL'] ?? '',
+            'timeout' => 10.0,
+
+            'headers' => [
+                'x-apikey' => $_ENV['XTRALIFE_API_KEY'] ?? '',
+                'x-apisecret' => $_ENV['XTRALIFE_API_SECRET'] ?? '',
+                'Content-Type' => 'application/json',
+                'Accepts' => 'application/json',
+            ],
+        ]);
+
+        // @todo For MODX3 support, grab the factory from the service container instead.
+        $this->factory = new HttpFactory();
     }
 
     /**
      * Gets a Guzzle instance to send requests to the XtraLife API.
      *
-     * @todo For MODX3 support, grab the client from the service container instead.
      * @return ClientInterface
      */
     public function getClient(): ClientInterface
     {
-        if (!$this->client) {
-            $this->client = new Client([
-                'base_uri' => $_ENV['XTRALIFE_API_URL'] ?? '',
-                'timeout' => 10.0,
-
-                'headers' => [
-                    'x-apikey' => $_ENV['XTRALIFE_API_KEY'] ?? '',
-                    'x-apisecret' => $_ENV['XTRALIFE_API_SECRET'] ?? '',
-                    'Content-Type' => 'application/json',
-                    'Accepts' => 'application/json',
-                ],
-            ]);
-        }
-
         return $this->client;
     }
 
     /**
      * Gets a RequestFactory to create new requests to send.
      *
-     * @todo For MODX3 support, grab the factory from the service container instead.
      * @return RequestFactoryInterface
      */
     public function getRequestFactory(): RequestFactoryInterface
     {
-        if (!$this->factory) {
-            $this->factory = new HttpFactory();
-        }
         return $this->factory;
     }
 }

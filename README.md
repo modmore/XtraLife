@@ -9,5 +9,19 @@ User integration for the XtraLife game platform. This package includes a custom 
 - Create `core/components/xtralife/.env` from the example `core/components/xtralife/.env.example`
 - Run the bootstrap: `php _bootstrap/index.php`
 
+## Usage instructions
+
+### Register
+
+Add postHook `XtraLifeRegister`: 
+
+```` 
+[[!Register?
+    ...
+    &postHooks=`XtraLifeRegister` 
+]]
+````
+
+Make sure the `username` is set as an email. E.g. ```&usernameField=`email` ``` + validate it as an email address.
 
 

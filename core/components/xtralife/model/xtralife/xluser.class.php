@@ -82,6 +82,7 @@ class xlUser extends modUser
         try {
             $encryptedSecret = Encryption::encrypt($secret, Encryption::KEY_DEFAULT);
             $remoteData['gamer_secret'] = $encryptedSecret;
+            $this->set('remote_data', $remoteData);
         } catch (EnvironmentIsBrokenException $e) {
             $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, 'Failed encrypting gamer secret for user ' . $this->get('id') . ': ' . $e->getMessage());
         }
