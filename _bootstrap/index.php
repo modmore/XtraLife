@@ -75,7 +75,7 @@ if ($plugin) {
     }
     if (!createObject('modPluginEvent', array(
         'pluginid' => $plugin->get('id'),
-        'event' => 'OnHandleRequest',
+        'event' => 'OnWebPageInit',
         'priority' => 0,
     ), array('pluginid','event'), false)) {
         echo "Error creating modPluginEvent.\n";

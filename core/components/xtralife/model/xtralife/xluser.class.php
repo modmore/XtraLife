@@ -55,7 +55,8 @@ class xlUser extends modUser
         // Only add the authorization string if we have a gamer secret.
         if ($gamerSecret = $this->getGamerSecret()) {
             $gamerId = $this->get('remote_key');
-            return $request->withHeader('Authorization', "Basic {$gamerId}:{$gamerSecret}");
+            $encoded = base64_encode("{$gamerId}:{$gamerSecret}");
+            return $request->withHeader('Authorization', "Basic {$encoded}");
         }
         return $request;
     }
