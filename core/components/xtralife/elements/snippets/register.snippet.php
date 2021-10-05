@@ -65,7 +65,7 @@ if (!in_array($response->getStatusCode(), [200, 201], true)) {
 }
 
 if (!is_array($data) || !array_key_exists('gamer_id', $data)) {
-    $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, 'Received invalid body validating password for ' . $this->get('id') . ': ' . $body);
+    $modx->log(xPDO::LOG_LEVEL_ERROR, 'Received invalid body validating password for ' . $user->get('id') . ': ' . $body);
     $hook->addError('xtralife', 'Unexpected response creating gamer user.');
     return false;
 }
