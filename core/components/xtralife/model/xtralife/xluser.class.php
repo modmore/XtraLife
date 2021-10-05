@@ -134,4 +134,34 @@ class xlUser extends modUser
         $this->set('password', $data['gamer_secret']); // Set the internal password to the gamer_secret; as we don't use it locally.
         return true;
     }
+
+    public function changePassword($newPassword, $oldPassword, $validateOldPassword = true)
+    {
+        if (parent::changePassword($newPassword, $oldPassword, $validateOldPassword)) {
+            $request = $this->xtraLifeRequestFactory->createRequest('POST', 'v1/gamer/password');
+            $request = $this->addGamerAuth($request);
+            $request->getBody()->write(json_encode([
+                'password' => $newPassword,
+            ]));
+
+            try {
+                $response = $this->xtraLifeClient->sendRequest($request);
+            } catch (ClientExceptionInterface $e) {
+                $this->xpdo->log(modX::LOG_LEVEL_ERROR, 'xlUser::changePassword got unexpected ' . get_class($e) . ': ' . $e->getMessage());
+                return false;
+            }
+
+            $body = $response->getBody()->getContents();
+            $data = json_decode($body, true);
+            if (!is_array($data) || !array_key_exists('done', $data)) {
+                $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, 'xlUser::changePassword received invalid body updating password for ' . $this->get('id') . ': ' . $body);
+                return false;
+            }
+
+            $this->set('password', $this->getGamerSecret());
+            $this->save();
+            return true;
+        }
+        return false;
+    }
 }

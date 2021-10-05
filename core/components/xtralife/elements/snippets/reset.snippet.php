@@ -137,34 +137,10 @@ if (isset($_POST) && !empty($_POST['code']) && isset($_SESSION['_xtralife_reset'
 
     $user->setGamerID($data['gamer_id']);
     $user->setGamerSecret($data['gamer_secret']);
-    $user->set('password', $data['gamer_secret']); // Set the internal password to the gamer_secret; as we don't use it locally.
     $user->save();
 
-    $newPassword = (string)$_POST['new_password'];
-
-    $request = $service->getRequestFactory()->createRequest('POST', 'v1/gamer/password');
-    $request = $user->addGamerAuth($request);
-    $request->getBody()->write(json_encode([
-        'password' => $newPassword,
-    ]));
-
-    try {
-        $response = $service->getClient()->sendRequest($request);
-    } catch (ClientExceptionInterface $e) {
-        $modx->log(modX::LOG_LEVEL_ERROR, 'XtraLifeReset snippet got unexpected ' . get_class($e) . ': ' . $e->getMessage());
-        return $service->getChunk($errorTpl, [
-            'message' => 'Unexpected error updating gamer password.',
-        ]);
-    }
-
-    $body = $response->getBody()->getContents();
-    $data = json_decode($body, true);
-    if (!is_array($data) || !array_key_exists('done', $data)) {
-        $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, 'Received invalid body validating password for ' . $this->get('id') . ': ' . $body);
-        return $service->getChunk($errorTpl, [
-            'message' => 'Failed saving gamer password.',
-        ]);
-    }
+    // Change the user password; this also updates XtraLife through xlUser::changePassword
+    $user->changePassword((string)$_POST['new_password'], '', false);
 
     // Login the user right away
     $user->addSessionContext($modx->context->get('key'));
