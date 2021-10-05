@@ -1,0 +1,1 @@
+<p class="success">Successfully updated your new password. You're now logged in.</p>

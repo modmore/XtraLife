@@ -15,6 +15,7 @@ class XtraLife
     public const VERSION = '1.0.0-dev1';
     private Client $client;
     private RequestFactoryInterface $factory;
+    private array $chunks = [];
 
     /**
      * @param modX $modx
@@ -95,6 +96,59 @@ class XtraLife
     public function getCsrf(): Csrf
     {
         return new Csrf(new Csrf\SessionStorage());
+    }
+
+
+    /**
+     * Gets a Chunk and caches it; also falls back to file-based templates
+     * for easier development.
+     *
+     * @param string $name The name of the Chunk
+     * @param array $properties The properties for the Chunk
+     * @return string The processed content of the Chunk
+     *@author Shaun McCormick
+     * @access public
+     */
+    public function getChunk(string $name, array $properties = array())
+    {
+        if (!isset($this->chunks[$name])) {
+            $chunk = $this->modx->getObject('modChunk', array('name' => $name));
+            if (empty($chunk) || !is_object($chunk)) {
+                $chunk = $this->_getTplChunk($name);
+                if ($chunk == false) return false;
+            }
+            $this->chunks[$name] = $chunk->getContent();
+        } else {
+            $o = $this->chunks[$name];
+            $chunk = $this->modx->newObject('modChunk');
+            $chunk->setContent($o);
+        }
+        $chunk->setCacheable(false);
+        return $chunk->process($properties);
+    }
+
+    /**
+     * Returns a modChunk object from a template file.
+     *
+     * @access private
+     * @param string $name The name of the Chunk. Will parse to name.chunk.tpl
+     * @param string $postFix The postfix to append to the name
+     * @return modChunk|boolean Returns the modChunk object if found, otherwise false.
+     * @author Shaun "splittingred" McCormick
+     */
+    private function _getTplChunk(string $name, string $postFix = '.chunk.tpl')
+    {
+        $chunk = false;
+        $f = $this->config['elementsPath'] . 'chunks/' . strtolower($name) . $postFix;
+        if (file_exists($f)) {
+            $o = file_get_contents($f);
+            /* @var modChunk $chunk */
+            $chunk = $this->modx->newObject('modChunk');
+            $chunk->set('name', $name);
+            $chunk->setContent($o);
+        }
+
+        return $chunk;
     }
 }
 
