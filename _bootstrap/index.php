@@ -89,6 +89,13 @@ if (!createObject('modSnippet', array(
 ), 'name', true)) {
     echo "Error creating XtraLifeRegister snippet.\n";
 }
+if (!createObject('modSnippet', array(
+    'name' => 'XtraLifePreRegister',
+    'static' => true,
+    'static_file' => $componentPath.'/core/components/xtralife/elements/snippets/preregister.snippet.php',
+), 'name', true)) {
+    echo "Error creating XtraLifePreRegister snippet.\n";
+}
 
 if (!createObject('modSnippet', array(
     'name' => 'XtraLifeReset',
