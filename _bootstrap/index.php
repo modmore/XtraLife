@@ -97,6 +97,13 @@ if (!createObject('modSnippet', array(
 ), 'name', true)) {
     echo "Error creating XtraLifeReset snippet.\n";
 }
+if (!createObject('modSnippet', array(
+    'name' => 'XtraLifeUpdateProfile',
+    'static' => true,
+    'static_file' => $componentPath.'/core/components/xtralife/elements/snippets/updateprofile.snippet.php',
+), 'name', true)) {
+    echo "Error creating XtraLifeUpdateProfile snippet.\n";
+}
 
 //$settings = include dirname(dirname(__FILE__)).'/_build/data/settings.php';
 //foreach ($settings as $key => $opts) {
