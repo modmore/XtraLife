@@ -34,6 +34,7 @@ if (!$user || !($user instanceof xlUser)) {
 }
 
 $email = $user->get('username');
+$email = strtolower($email);
 
 
 $request = $service->getRequestFactory()->createRequest('POST', 'v1/login');

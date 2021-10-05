@@ -96,10 +96,13 @@ class xlUser extends modUser
 
     public function passwordMatches($password, array $options = array()): bool
     {
+        $email = $this->get('username');
+        $email = strtolower($email);
+
         $request = $this->xtraLifeRequestFactory->createRequest('POST', '/v1/login');
         $request->getBody()->write(json_encode([
             'network' => 'email',
-            'id' => $this->get('username'),
+            'id' => $email,
             'secret' => $password,
             'options' => [
                 'preventRegistration' => true,

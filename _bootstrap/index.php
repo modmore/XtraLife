@@ -90,6 +90,14 @@ if (!createObject('modSnippet', array(
     echo "Error creating XtraLifeRegister snippet.\n";
 }
 
+if (!createObject('modSnippet', array(
+    'name' => 'XtraLifeReset',
+    'static' => true,
+    'static_file' => $componentPath.'/core/components/xtralife/elements/snippets/reset.snippet.php',
+), 'name', true)) {
+    echo "Error creating XtraLifeReset snippet.\n";
+}
+
 //$settings = include dirname(dirname(__FILE__)).'/_build/data/settings.php';
 //foreach ($settings as $key => $opts) {
 //    if (!createObject('modSystemSetting', array(
