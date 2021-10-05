@@ -13,8 +13,14 @@ if (!($service instanceof XtraLife)) {
     return false;
 }
 
+$csrf = $service->getCsrf();
+
 
 if (isset($_POST) && !empty($_POST['reset_email'])) {
+    if (!$csrf->checkOnce('reset_email', $_POST['csrf_token'] ?? '')) {
+        return '<p class="error">Invalid security token.</p>';
+    }
+
     $email = trim(strtolower($_POST['reset_email']));
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return '<p class="error">Invalid email address provided.</p>';
@@ -55,7 +61,7 @@ if (isset($_POST) && !empty($_POST['reset_email'])) {
     return <<<HTML
 <p>An email has been sent to you with a reset code. Please enter it below with a new password.</p>
 <form action="[[~[[*id]]]]" method="post">
-    <input type="hidden" name="csrf_token" value="">
+    <input type="hidden" name="csrf_token" value="{$csrf->generate('reset_code')}">
     
     <div class="form-field">
         <label for="reset-shortcode">Reset code:</label>
@@ -78,6 +84,10 @@ HTML;
  * Handle checking code and setting password
  */
 if (isset($_POST) && !empty($_POST['code']) && isset($_SESSION['_xtralife_reset']) && is_array($_SESSION['_xtralife_reset'])) {
+    if (!$csrf->checkOnce('reset_code', $_POST['csrf_token'] ?? '')) {
+        return '<p class="error">Invalid security token.</p>';
+    }
+
     $request = $service->getRequestFactory()->createRequest('POST', 'v1/login');
     $request->getBody()->write(json_encode([
         'network' => 'restore',
@@ -149,10 +159,11 @@ if (isset($_POST) && !empty($_POST['code']) && isset($_SESSION['_xtralife_reset'
     return '<p class="success">Successfully updated your new password. You\'re now logged in.</p>';
 }
 
+
 return <<<HTML
 <p>If you've forgotten your password, you may set a new password here. Please start by entering your emailaddress, we will send a reset code to your email.</p>
 <form action="[[~[[*id]]]]" method="post">
-    <input type="hidden" name="csrf_token" value="">
+    <input type="hidden" name="csrf_token" value="{$csrf->generate('reset_email')}">
     
     <div class="form-field">
         <label for="reset-email">Email address:</label>

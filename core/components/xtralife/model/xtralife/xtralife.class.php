@@ -2,6 +2,7 @@
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
+use modmore\XtraLife\Security\Csrf;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 
@@ -84,6 +85,16 @@ class XtraLife
     public function getRequestFactory(): RequestFactoryInterface
     {
         return $this->factory;
+    }
+
+    /**
+     * Creates a fresh Csrf instance.
+     *
+     * @return Csrf
+     */
+    public function getCsrf(): Csrf
+    {
+        return new Csrf(new Csrf\SessionStorage());
     }
 }
 
