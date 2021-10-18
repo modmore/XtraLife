@@ -24,7 +24,7 @@ if (!defined('MOREPROVIDER_BUILD')) {
     /* define version */
     define('PKG_NAME', 'XtraLife');
     define('PKG_NAME_LOWER', strtolower(PKG_NAME));
-    define('PKG_VERSION', '1.0.0');
+    define('PKG_VERSION', '1.0.1');
     define('PKG_RELEASE', 'pl');
 
     /* load modx */
@@ -90,6 +90,9 @@ $builder->package->put(
             ],[
                 'type' => 'php',
                 'source' => $sources['resolvers'] . 'dependencies.resolver.php',
+            ],[
+                'type' => 'php',
+                'source' => $sources['resolvers'] . 'extension_package.resolver.php',
             ],
         ]
     ]

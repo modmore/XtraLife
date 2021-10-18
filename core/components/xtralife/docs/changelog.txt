@@ -1,5 +1,12 @@
-XtraLife 1.0.0-dev1
+XtraLife 1.0.1-pl
 ---------------------
-Released on 2021-10-0
+Released on 2021-10-19
+
+- Fix extension package not being created on install
+
+
+XtraLife 1.0.0-pl
+---------------------
+Released on 2021-10-05
 
 - First release
