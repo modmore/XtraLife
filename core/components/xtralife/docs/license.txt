@@ -1,9 +1,3 @@
-This project is proprietary ownership of modmore, until the project is completed
-and fully paid at which point the license below will go into effect, per project
-agreement signed October 2nd, 2021.
-
-- - - - -
-
 The MIT License (MIT)
 
 Copyright (c) 2021 modmore <support@modmore.com>
